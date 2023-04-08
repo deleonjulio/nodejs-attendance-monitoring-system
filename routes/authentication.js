@@ -7,7 +7,7 @@ router.use((req, res, next) => {
     next();
 })
 
-router.post('/login', (req, res) => {
+router.post('/api/login', (req, res) => {
     let sessionData = {
         id: 1,
         email: 'admin@gmail.com',
@@ -25,12 +25,17 @@ router.post('/login', (req, res) => {
     });
 })
 
-router.post('/authenticate', (req, res) => {
+router.post('/api/authenticate', (req, res) => {
     if (req.session.user) {
         res.status(200).json({code:200, message:"Authenticated", description: "AUTHENTICATED", data: req.session.user});
     } else {
         res.status(401).json(getErrorResponse(errors.UNAUTHORIZED));
     }
+})
+
+router.post('/api/logout', (req, res) => {
+    req.session.destroy()
+    res.status(200).json({code:200, message:"Logout Successful", description: "LOGOUT_SUCCESSFUL"}) 
 })
 
 module.exports = router;
